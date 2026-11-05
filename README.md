@@ -1,8 +1,8 @@
 # Tugas Deep Learning — Implementasi Arsitektur CNN, RNN, dan Transfer Learning
 
 > **Mata Kuliah:** Deep Learning  
-> **Nama:** [Nama Mahasiswa]  
-> **NIM:** [NIM]  
+> **Nama:** Imam Dzaqhoir  
+> **NIM:** H071241048  
 > **Deadline:** Jumat, 6 November 2026
 
 ---

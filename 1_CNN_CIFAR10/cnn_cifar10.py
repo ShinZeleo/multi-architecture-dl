@@ -2,8 +2,8 @@
 ==============================================================
 Tugas Deep Learning - Implementasi 1: CNN (CIFAR-10)
 ==============================================================
-Nama   : [Nama Mahasiswa]
-NIM    : [NIM]
+Nama   : Imam Dzaqhoir
+NIM    : H071241048
 Kelas  : [Kelas]
 Dosen  : [Nama Dosen]
 

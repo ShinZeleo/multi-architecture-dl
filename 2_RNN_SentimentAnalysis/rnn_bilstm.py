@@ -2,8 +2,8 @@
 ==============================================================
 Tugas Deep Learning - Implementasi 2: RNN/LSTM (Sentiment Analysis)
 ==============================================================
-Nama   : [Nama Mahasiswa]
-NIM    : [NIM]
+Nama   : Imam Dzaqhoir
+NIM    : H071241048
 Kelas  : [Kelas]
 Dosen  : [Nama Dosen]
 

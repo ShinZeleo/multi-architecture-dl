@@ -2,8 +2,8 @@
 ==============================================================
 Tugas Deep Learning - Implementasi 3: Transfer Learning (ResNet18)
 ==============================================================
-Nama   : [Nama Mahasiswa]
-NIM    : [NIM]
+Nama   : Imam Dzaqhoir
+NIM    : H071241048
 Kelas  : [Kelas]
 Dosen  : [Nama Dosen]
 
