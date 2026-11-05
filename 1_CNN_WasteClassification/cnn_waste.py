@@ -4,8 +4,8 @@ Tugas Deep Learning - Implementasi 1: CNN (Waste Classification)
 ==============================================================
 Nama   : Imam Dzaqhoir
 NIM    : H071241048
-Kelas  : [Kelas]
-Dosen  : [Nama Dosen]
+Kelas  : Deep Learning
+Dosen  : Prof. Dr. Armin Lawi, S.Si., M.Si.
 
 Deskripsi:
   Implementasi Convolutional Neural Network (CNN) dari awal (scratch)

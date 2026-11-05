@@ -2,7 +2,8 @@
 
 > **Nama Mahasiswa:** Imam Dzaqhoir  
 > **NIM:** H071241048  
-> **Mata Kuliah:** Deep Learning  
+> **Mata Kuliah / Kelas:** Deep Learning  
+> **Dosen Pengampu:** Prof. Dr. Armin Lawi, S.Si., M.Si.  
 > **Repository:** [https://github.com/ShinZeleo/multi-architecture-dl](https://github.com/ShinZeleo/multi-architecture-dl)
 
 ---

@@ -4,8 +4,8 @@ Tugas Deep Learning - Implementasi 2: BiGRU/LSTM (Indonesian Emotion)
 ==============================================================
 Nama   : Imam Dzaqhoir
 NIM    : H071241048
-Kelas  : [Kelas]
-Dosen  : [Nama Dosen]
+Kelas  : Deep Learning
+Dosen  : Prof. Dr. Armin Lawi, S.Si., M.Si.
 
 Deskripsi:
   Implementasi Recurrent Neural Network (RNN / Bidirectional GRU)

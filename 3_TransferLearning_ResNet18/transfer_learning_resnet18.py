@@ -4,8 +4,8 @@ Tugas Deep Learning - Implementasi 3: Transfer Learning (ResNet-18)
 ==============================================================
 Nama   : Imam Dzaqhoir
 NIM    : H071241048
-Kelas  : [Kelas]
-Dosen  : [Nama Dosen]
+Kelas  : Deep Learning
+Dosen  : Prof. Dr. Armin Lawi, S.Si., M.Si.
 
 Deskripsi:
   Implementasi Transfer Learning menggunakan arsitektur ResNet-18
