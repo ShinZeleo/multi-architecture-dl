@@ -1,45 +1,45 @@
-# Tugas Deep Learning — Implementasi Arsitektur CNN, RNN, dan Transfer Learning
+# Tugas Praktikum Deep Learning — Multi-Architecture Implementation
 
-> **Mata Kuliah:** Deep Learning  
-> **Nama:** Imam Dzaqhoir  
+> **Nama Mahasiswa:** Imam Dzaqhoir  
 > **NIM:** H071241048  
-> **Deadline:** Jumat, 6 November 2026
+> **Mata Kuliah:** Deep Learning  
+> **Repository:** [https://github.com/ShinZeleo/multi-architecture-dl](https://github.com/ShinZeleo/multi-architecture-dl)
 
 ---
 
-## 📌 Deskripsi Proyek
+## 📌 Ringkasan Tugas & Dataset Langka (Anti-Mainstream)
 
-Proyek ini mengimplementasikan **3 arsitektur Deep Learning** menggunakan PyTorch:
+Untuk menghindari dataset pasaran standar tutorial (*seperti CIFAR-10, Fashion-MNIST, dan IMDB Reviews*), tugas ini mengimplementasikan **3 arsitektur Deep Learning** dengan dataset yang relevan di dunia nyata (*real-world applications*):
 
-| # | Arsitektur | Dataset | Task |
-|---|-----------|---------|------|
-| 1 | **CNN** (Custom Deep CNN) | CIFAR-10 | Image Classification (10 kelas) |
-| 2 | **RNN/BiLSTM** | 20Newsgroups | Text Classification (Sport vs Teknologi) |
-| 3 | **Transfer Learning** (ResNet-18) | Oxford Flowers-102 | Flower Classification (5 kelas) |
+| No | Arsitektur | Dataset Pilihan | Task / Domain | Test Accuracy | Link Sumber Dataset (Untuk Spreadsheet) |
+|---|---|---|---|---|---|
+| **1** | **Custom Deep CNN** | **TrashNet** | 6-Class Waste Classification (*Smart Recycling*) | **70.79%** | [`https://github.com/garythung/trashnet`](https://github.com/garythung/trashnet) |
+| **2** | **Bidirectional GRU / RNN** | **Indonesian Twitter Emotion** | 5-Class Text Emotion Analysis (*NLP Bahasa Indonesia*) | **62.48%** | [`https://github.com/meisaputri21/Indonesian-Twitter-Emotion-Dataset`](https://github.com/meisaputri21/Indonesian-Twitter-Emotion-Dataset) |
+| **3** | **Transfer Learning (ResNet-18)** | **TrashNet** | Image Classification Benchmark (*Scratch vs Pretrained*) | **85.00%** | [`https://github.com/garythung/trashnet`](https://github.com/garythung/trashnet) |
 
 ---
 
-## 🗂️ Struktur Repository
+## 🗂️ Struktur Direktori Proyek
 
 ```
 TugasDL/
-├── 1_CNN_CIFAR10/
-│   ├── cnn_cifar10.py          # Implementasi CNN dari scratch
-│   └── data/                   # Dataset CIFAR-10 (auto-download)
+├── 1_CNN_WasteClassification/
+│   ├── cnn_waste.py               # Source code Custom CNN (TrashNet)
+│   └── cnn_best_model.pth         # Checkpoint model terbaik
 │
-├── 2_RNN_SentimentAnalysis/
-│   ├── rnn_bilstm.py           # Implementasi BiLSTM classifier
-│   └── data/                   # Dataset 20Newsgroups (auto-download)
+├── 2_RNN_IndonesianEmotion/
+│   ├── rnn_indo_emotion.py        # Source code BiGRU (Indonesian Emotion)
+│   └── rnn_best_model.pth         # Checkpoint model terbaik
 │
-├── 3_TransferLearning_FlowerClassification/
-│   ├── transfer_learning_resnet18.py   # ResNet-18 fine-tuning
-│   └── data/                           # Flowers-102 (auto-download)
+├── 3_TransferLearning_ResNet18/
+│   ├── transfer_learning_resnet18.py # Pretrained ResNet-18 Fine-tuning
+│   └── tl_best_model.pth          # Checkpoint model terbaik
 │
-├── assets/                     # Grafik hasil training (PNG)
+├── assets/                        # Grafik visualisasi training & evaluasi
 │   ├── cnn_sample_images.png
 │   ├── cnn_training_history.png
 │   ├── cnn_confusion_matrix.png
-│   ├── rnn_text_length_dist.png
+│   ├── rnn_emotion_dist.png
 │   ├── rnn_training_history.png
 │   ├── rnn_confusion_matrix.png
 │   ├── tl_param_comparison.png
@@ -47,172 +47,129 @@ TugasDL/
 │   └── tl_confusion_matrix.png
 │
 ├── requirements.txt
+├── .gitignore
 └── README.md
 ```
 
 ---
 
-## 🧠 Arsitektur Model
+## 🧠 Detail Arsitektur & Hasil Eksperimen
 
-### 1. CNN — CIFAR-10 Image Classification
-
-**Dataset:** CIFAR-10 — 60.000 gambar (32×32), 10 kelas
-
-**Arsitektur Custom CNN:**
-```
-Input (3×32×32)
-  → Conv Block 1: Conv2d(3→32) + Conv2d(32→32) + BN + ReLU + MaxPool + Dropout(0.1) → 32×16×16
-  → Conv Block 2: Conv2d(32→64) + Conv2d(64→64) + BN + ReLU + MaxPool + Dropout(0.2) → 64×8×8
-  → Conv Block 3: Conv2d(64→128) + Conv2d(128→128) + BN + ReLU + MaxPool + Dropout(0.3) → 128×4×4
-  → Flatten → FC(2048→256) + ReLU + Dropout(0.5) → FC(256→10)
-  → Output (10 kelas)
-```
-
-**Teknik Regularisasi:**
-- Batch Normalization di setiap Conv layer
-- Dropout (0.1 → 0.3 → 0.5)
-- Data Augmentation: RandomCrop, RandomFlip, ColorJitter
-- Weight Decay (L2) + CosineAnnealing Scheduler
-
----
-
-### 2. RNN/BiLSTM — Text Classification (Sport vs Teknologi)
-
-**Dataset:** 20 Newsgroups — artikel berita teks bahasa Inggris
-
-**Arsitektur Bidirectional LSTM:**
-```
-Input (token IDs, max_len=200)
-  → Embedding Layer (vocab_size=15.000, embed_dim=128)
-  → Bi-LSTM (hidden=256, 2 layer, dropout=0.5)
-  → Global Avg Pool + Global Max Pool
-  → Concat (1024-dim) → FC(128) + ReLU + Dropout → FC(2)
-  → Output (2 kelas: Sport / Non-Sport)
-```
-
-**Perbedaan RNN vs LSTM vs GRU:**
-| | RNN Vanilla | LSTM | GRU |
-|--|------------|------|-----|
-| Memory | ❌ Short-term only | ✅ Long-term (cell state) | ✅ Long-term (simpler) |
-| Gates | Tidak ada | Input, Forget, Output | Reset, Update |
-| Parameter | Sedikit | Paling banyak | Sedang |
-| Vanishing Grad | ⚠️ Rentan | ✅ Diatasi | ✅ Diatasi |
+### 1. Custom Deep CNN (Waste Classification)
+* **Dataset:** TrashNet oleh Gary Thung & Mindy Yang (Stanford University).
+* **Kelas (6 Jenis Sampah):** `cardboard`, `glass`, `metal`, `paper`, `plastic`, `trash`.
+* **Arsitektur Model:**
+  ```
+  Input: (3 × 128 × 128)
+    ├── Conv Block 1: Conv2d(3->32) + BN + ReLU + Conv2d(32->32) + BN + ReLU + MaxPool(2x2) + Dropout(0.1)
+    ├── Conv Block 2: Conv2d(32->64) + BN + ReLU + Conv2d(64->64) + BN + ReLU + MaxPool(2x2) + Dropout(0.2)
+    ├── Conv Block 3: Conv2d(64->128) + BN + ReLU + Conv2d(128->128) + BN + ReLU + MaxPool(2x2) + Dropout(0.25)
+    ├── Conv Block 4: Conv2d(128->256) + BN + ReLU + MaxPool(2x2) + Dropout(0.3)
+    └── Dense Classifier:
+          Flatten(16384) -> Dense(512) + BN + ReLU + Dropout(0.5)
+                         -> Dense(128) + ReLU + Dropout(0.3)
+                         -> Dense(6) -> Logits
+  ```
+* **Hasil Evaluasi:**
+  * **Test Accuracy:** **70.79%**
+  * **Sampel Citra & Hasil Pelatihan:**
+  
+  ![Sample Images](assets/cnn_sample_images.png)
+  ![CNN Training History](assets/cnn_training_history.png)
+  ![CNN Confusion Matrix](assets/cnn_confusion_matrix.png)
 
 ---
 
-### 3. Transfer Learning — Flower Classification (ResNet-18)
+### 2. Bidirectional GRU (Indonesian Twitter Emotion Analysis)
+* **Dataset:** Indonesian Twitter Emotion Dataset (4.401 tweet berlabel emosi bahasa Indonesia).
+* **Kelas (5 Kategori Emosi):** `anger` (marah), `happy` (senang), `sadness` (sedih), `fear` (takut), `love` (cinta).
+* **Mengapa GRU Lebih Baik dari RNN Vanilla?**
+  * RNN tradisional menderita masalah *Vanishing & Exploding Gradients* pada sekuens panjang.
+  * GRU memiliki *Update Gate* dan *Reset Gate* yang mampu mempertahankan informasi jangka panjang (*long-term dependencies*) dengan komputasi lebih efisien dibanding LSTM.
+  * Sifat **Bidirectional** memungkinkan model membaca konteks kalimat dari kiri-ke-kanan dan kanan-ke-kiri secara simultan.
+* **Hasil Evaluasi:**
+  * **Test Accuracy:** **62.48%** (*multi-class text classification across 5 fine-grained emotions*)
+  * **Distribusi & Hasil Pelatihan:**
+  
+  ![Emotion Distribution](assets/rnn_emotion_dist.png)
+  ![RNN Training History](assets/rnn_training_history.png)
+  ![RNN Confusion Matrix](assets/rnn_confusion_matrix.png)
 
-**Dataset:** Oxford 102 Flowers (5 kelas dipilih)
-
-**Strategi Fine-tuning (2 Phase):**
-
-```
-ResNet-18 (pretrained ImageNet, 11.2M params)
-         ↓
-Phase 1 — Feature Extraction (5 epoch):
-  • Backbone FROZEN
-  • Hanya melatih head: FC(512→256→5)
-  • LR = 1e-3
-
-Phase 2 — Fine-tuning (10 epoch):
-  • Semua layer UNFROZEN
-  • Backbone LR = 1e-4 (kecil)
-  • Head LR = 1e-3 (lebih besar)
-  • CosineAnnealing Scheduler
-```
-
-**Keunggulan Transfer Learning:**
-- ✅ Tidak perlu data berlimpah
-- ✅ Training lebih cepat
-- ✅ Fitur pretrained (tepi, tekstur, pola) sudah kuat
-- ✅ Mencegah overfitting pada dataset kecil
+* **Demo Prediksi Kalimat Nyata:**
+  ```text
+  "Alhamdulillah seneng banget akhirnya tugas deep learning selesai!" -> [HAPPY] (100.0%)
+  "Sedih banget dengar kabar duka ini, gak terasa air mata menetes."   -> [SADNESS] (99.3%)
+  "Merinding parah, takut banget lewat jalan sepi tadi malam."        -> [FEAR] (100.0%)
+  "Terima kasih selalu ada untukku sayang, aku sangat mencintaimu."   -> [LOVE] (99.6%)
+  ```
 
 ---
 
-## ⚙️ Cara Menjalankan
+### 3. Transfer Learning (ResNet-18 Fine-Tuning)
+* **Dataset:** TrashNet (6 kelas).
+* **Base Model:** ResNet-18 yang telah di-pretrained pada 1,2 juta gambar ImageNet-1K.
+* **Metode 2-Tahap (Two-Phase Fine-Tuning):**
+  1. **Tahap 1 — Feature Extraction (5 Epoch):** Seluruh bobot *backbone* dibekukan (*frozen*). Hanya Fully-Connected classifier head baru yang dilatih.
+  2. **Tahap 2 — Fine-Tuning (8 Epoch):** Membuka blok konvolusi paling atas (`layer4`) dan FC head menggunakan *differential learning rates* (LR backbone $5 \times 10^{-5}$, LR head $10^{-4}$).
+* **Hasil Evaluasi:**
+  * **Test Accuracy:** **85.00%** (*peningkatan +14.21% dibanding Custom CNN dari nol!*)
+  
+  ![Parameter Comparison](assets/tl_param_comparison.png)
+  ![Transfer Learning History](assets/tl_training_history.png)
+  ![Transfer Learning Confusion Matrix](assets/tl_confusion_matrix.png)
 
-### Prerequisites
+---
+
+## 📊 Perbandingan Head-to-Head: Scratch CNN vs Transfer Learning
+
+| Metrik Evaluasi | Custom CNN (Dari Nol) | Transfer Learning (ResNet-18) | Peningkatan (Gain) |
+|---|---|---|---|
+| **Akurasi Uji (Test Accuracy)** | 70.79% | **85.00%** | **+14.21%** |
+| **Waktu Konvergensi** | Butuh 15 epoch | 5 epoch sudah >78% | **3x Lebih Cepat** |
+| **F1-Score Rata-rata** | 0.67 | **0.83** | **+0.16** |
+| **Kelas Terbaik** | Cardboard (0.84) | Cardboard (**0.92**), Paper (**0.89**) | Signifikan |
+
+---
+
+## 🚀 Cara Menjalankan Kode
+
+### 1. Instalasi Dependensi
 ```bash
 pip install -r requirements.txt
 ```
 
-### 1. Jalankan CNN (CIFAR-10)
+### 2. Menjalankan CNN (Waste Classification)
 ```bash
-cd 1_CNN_CIFAR10
-python cnn_cifar10.py
+cd 1_CNN_WasteClassification
+python cnn_waste.py
 ```
 
-### 2. Jalankan RNN/BiLSTM
+### 3. Menjalankan BiGRU (Analisis Emosi Bahasa Indonesia)
 ```bash
-cd 2_RNN_SentimentAnalysis
-python rnn_bilstm.py
+cd 2_RNN_IndonesianEmotion
+python rnn_indo_emotion.py
 ```
 
-### 3. Jalankan Transfer Learning
+### 4. Menjalankan Transfer Learning (ResNet-18)
 ```bash
-cd 3_TransferLearning_FlowerClassification
+cd 3_TransferLearning_ResNet18
 python transfer_learning_resnet18.py
 ```
 
-> ⚠️ Dataset akan **didownload otomatis** saat pertama kali dijalankan.
+---
+
+## 📋 Data untuk Pengumpulan di Google Spreadsheet
+
+Saat mengisi Google Spreadsheet tugas kuliah:
+
+* **Nama:** `Imam Dzaqhoir`
+* **NIM:** `H071241048`
+* **Link Repository GitHub:** `https://github.com/ShinZeleo/multi-architecture-dl`
+* **Model yang Diimplementasikan:** `CNN, RNN (BiGRU), Transfer Learning (ResNet-18)`
+* **Link Dataset:**
+  - CNN & Transfer Learning: `https://github.com/garythung/trashnet`
+  - RNN / BiGRU: `https://github.com/meisaputri21/Indonesian-Twitter-Emotion-Dataset`
 
 ---
 
-## 📊 Hasil Eksperimen
-
-### CNN — CIFAR-10
-| Metrik | Nilai |
-|--------|-------|
-| Epochs | 20 |
-| Optimizer | Adam (lr=1e-3, wd=1e-4) |
-| Scheduler | CosineAnnealing |
-| Test Accuracy | *lihat output training* |
-
-### RNN/BiLSTM — Text Classification
-| Metrik | Nilai |
-|--------|-------|
-| Epochs | 15 |
-| Optimizer | Adam (lr=1e-3) |
-| Scheduler | ReduceLROnPlateau |
-| Max Seq Length | 200 token |
-| Vocab Size | 15.000 |
-| Test Accuracy | *lihat output training* |
-
-### Transfer Learning — ResNet-18
-| Metrik | Nilai |
-|--------|-------|
-| Backbone | ResNet-18 (ImageNet pretrained) |
-| Phase 1 Epochs | 5 (frozen backbone) |
-| Phase 2 Epochs | 10 (all unfrozen) |
-| Input Size | 224×224 |
-| Test Accuracy | *lihat output training* |
-
----
-
-## 🔧 Requirements
-
-Lihat [`requirements.txt`](requirements.txt) untuk daftar dependensi lengkap.
-
-**Library utama:**
-- `torch` ≥ 2.0
-- `torchvision` ≥ 0.15
-- `scikit-learn`
-- `matplotlib`
-- `seaborn`
-- `numpy`
-- `pandas`
-- `tqdm`
-
----
-
-## 📚 Referensi
-
-1. LeCun, Y., et al. (1998). *Gradient-based learning applied to document recognition.* Proceedings of the IEEE.
-2. Hochreiter, S., & Schmidhuber, J. (1997). *Long Short-Term Memory.* Neural Computation.
-3. He, K., et al. (2016). *Deep Residual Learning for Image Recognition.* CVPR.
-4. Pan, S. J., & Yang, Q. (2010). *A Survey on Transfer Learning.* IEEE TKDE.
-5. PyTorch Documentation: https://pytorch.org/docs/stable/index.html
-
----
-
-*Dibuat untuk memenuhi tugas mata kuliah Deep Learning*
+*Proyek dibuat dan dioptimalkan untuk tugas individu mata kuliah Deep Learning.*
